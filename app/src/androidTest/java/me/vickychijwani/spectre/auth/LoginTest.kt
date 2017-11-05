@@ -3,6 +3,7 @@ package me.vickychijwani.spectre.auth
 import android.app.Activity
 import android.content.ComponentName
 import android.content.Intent
+import android.support.test.InstrumentationRegistry
 import android.support.test.InstrumentationRegistry.getTargetContext
 import android.support.test.espresso.Espresso.onView
 import android.support.test.espresso.action.ViewActions.click
@@ -38,13 +39,18 @@ class LoginTest {
     @Rule @JvmField
     val mPrefsRule = ClearPreferencesRule()
 
+    private val ARGS = InstrumentationRegistry.getArguments()
+    private val TEST_BLOG = ARGS.getString("testBlog", "10.0.2.2:2368")
+    private val TEST_USER = ARGS.getString("testUser", "user@example.com")
+    private val TEST_PWD = ARGS.getString("testPwd", "randomtestpwd")
+
     @Test
     fun successfulLogin() {
         startLogin {
-            blogAddress("10.0.2.2:2368")
+            blogAddress(TEST_BLOG)
         } connectToBlog {
-            email("user@example.com")
-            password("randomtestpwd")
+            email(TEST_USER)
+            password(TEST_PWD)
         } login {
             isLoggedIn()
         }
@@ -62,7 +68,7 @@ class LoginTest {
     @Test
     fun invalidEmail() {
         startLogin {
-            blogAddress("10.0.2.2:2368")
+            blogAddress(TEST_BLOG)
         } connectToBlog {
             email("invalid_email")
         } login {
@@ -73,7 +79,7 @@ class LoginTest {
     @Test
     fun nonExistentUser() {
         startLogin {
-            blogAddress("10.0.2.2:2368")
+            blogAddress(TEST_BLOG)
         } connectToBlog {
             email("nonexistent@example.com")
             password("doesnt_matter")
@@ -85,9 +91,9 @@ class LoginTest {
     @Test
     fun wrongPassword() {
         startLogin {
-            blogAddress("10.0.2.2:2368")
+            blogAddress(TEST_BLOG)
         } connectToBlog {
-            email("user@example.com")
+            email(TEST_USER)
             password("wrongpassword")
         } login {
             errorMatching("Your password is incorrect")

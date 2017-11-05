@@ -33,6 +33,9 @@ android {
 
         testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         testApplicationId 'org.ghost.android'
+        testInstrumentationRunnerArguments testBlog: System.getenv("TEST_BLOG") ?: ''
+        testInstrumentationRunnerArguments testUser: System.getenv("TEST_USER") ?: ''
+        testInstrumentationRunnerArguments testPwd: System.getenv("TEST_PWD") ?: ''
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -166,4 +169,5 @@ dependencies {
     androidTestImplementation "com.android.support.test:rules:$rootProject.ext.androidJunitRunnerVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-idling-resource:$rootProject.ext.espressoVersion"
 }
